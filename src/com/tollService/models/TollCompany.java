@@ -1,4 +1,4 @@
-package com.parkingLot.models;
+package com.tollService.models;
 
 import java.util.ArrayList;
 import java.util.List;

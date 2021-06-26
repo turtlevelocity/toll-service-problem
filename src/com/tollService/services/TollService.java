@@ -1,11 +1,11 @@
-package com.parkingLot.services;
+package com.tollService.services;
 
-import com.parkingLot.exceptions.AlreadyExistException;
-import com.parkingLot.models.LeaderBoard;
-import com.parkingLot.models.Pass;
-import com.parkingLot.models.Toll;
-import com.parkingLot.models.TollBooth;
-import com.parkingLot.models.Vehicle;
+import com.tollService.exceptions.AlreadyExistException;
+import com.tollService.models.LeaderBoard;
+import com.tollService.models.Pass;
+import com.tollService.models.Toll;
+import com.tollService.models.TollBooth;
+import com.tollService.models.Vehicle;
 
 import java.util.ArrayList;
 import java.util.HashMap;

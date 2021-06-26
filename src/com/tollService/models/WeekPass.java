@@ -1,4 +1,4 @@
-package com.parkingLot.models;
+package com.tollService.models;
 
 public class WeekPass extends Pass {
 

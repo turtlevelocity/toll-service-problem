@@ -1,9 +1,9 @@
-package com.parkingLot.services;
+package com.tollService.services;
 
-import com.parkingLot.exceptions.PassNotFoundException;
-import com.parkingLot.exceptions.VehicleNotFoundException;
-import com.parkingLot.models.Pass;
-import com.parkingLot.models.Vehicle;
+import com.tollService.exceptions.PassNotFoundException;
+import com.tollService.exceptions.VehicleNotFoundException;
+import com.tollService.models.Pass;
+import com.tollService.models.Vehicle;
 
 import java.util.HashMap;
 import java.util.Map;

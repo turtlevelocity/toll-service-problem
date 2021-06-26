@@ -1,16 +1,16 @@
-package com.parkingLot;
+package com.tollService;
 
-import com.parkingLot.controllers.TollController;
-import com.parkingLot.models.LeaderBoard;
-import com.parkingLot.models.Pass;
-import com.parkingLot.models.ReturnPass;
-import com.parkingLot.models.SinglePass;
-import com.parkingLot.models.Toll;
-import com.parkingLot.models.TollBooth;
-import com.parkingLot.models.TwoWheelVehicle;
-import com.parkingLot.models.Vehicle;
-import com.parkingLot.services.TollService;
-import com.parkingLot.services.VehicleService;
+import com.tollService.controllers.TollController;
+import com.tollService.models.LeaderBoard;
+import com.tollService.models.Pass;
+import com.tollService.models.ReturnPass;
+import com.tollService.models.SinglePass;
+import com.tollService.models.Toll;
+import com.tollService.models.TollBooth;
+import com.tollService.models.TwoWheelVehicle;
+import com.tollService.models.Vehicle;
+import com.tollService.services.TollService;
+import com.tollService.services.VehicleService;
 
 public class Main {
 

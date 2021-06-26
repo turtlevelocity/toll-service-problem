@@ -1,11 +1,11 @@
-package com.parkingLot.controllers;
+package com.tollService.controllers;
 
-import com.parkingLot.models.LeaderBoard;
-import com.parkingLot.models.Pass;
-import com.parkingLot.models.Toll;
-import com.parkingLot.models.TollBooth;
-import com.parkingLot.models.Vehicle;
-import com.parkingLot.services.TollService;
+import com.tollService.models.LeaderBoard;
+import com.tollService.models.Pass;
+import com.tollService.models.Toll;
+import com.tollService.models.TollBooth;
+import com.tollService.models.Vehicle;
+import com.tollService.services.TollService;
 
 public class TollController {
     private final TollService tollService;
