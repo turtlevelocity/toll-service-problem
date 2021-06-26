@@ -1,22 +1,23 @@
 package com.tollService.models;
 
+import java.util.UUID;
+
 public class SinglePass extends Pass{
 
-    public SinglePass(Toll toll, TollBooth booth) {
-        super(toll, booth);
+    private String id;
+
+    public SinglePass(Toll toll, TollBooth booth, Vehicle vehicle) {
+        super(toll, booth, vehicle);
+        this.status = PassStatus.EXPIRED;
+        this.id = UUID.randomUUID().toString();
     }
 
     @Override
-    public boolean isValidPass(Vehicle vehicle, Toll toll) {
-        Pass pass = vehicle.getPass();
-        if(pass.getToll().equals(toll)){
-            if(pass.status==PassStatus.VALID){
-                pass.setStatus(PassStatus.EXPIRED);
-                return true;
-            }
-            return false;
-        }
-        return false;
+    public boolean isValidPass(Pass pass, Toll toll){
+        return (pass.status==PassStatus.VALID && pass.getToll().equals(toll));
     }
 
+    public void updatePass(Pass pass){
+        this.setStatus(PassStatus.EXPIRED);
+    }
 }

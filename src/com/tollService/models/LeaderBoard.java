@@ -1,11 +1,11 @@
 package com.tollService.models;
 
 public class LeaderBoard {
-    private Integer numberOfVehicles;
+    private Integer totalVehicles;
     private double totalAmount;
 
-    public LeaderBoard(Integer numberOfVehicles, double totalAmount){
-        this.numberOfVehicles = numberOfVehicles;
+    public LeaderBoard(Integer totalVehicles, double totalAmount){
+        this.totalVehicles = totalVehicles;
         this.totalAmount = totalAmount;
     }
 
@@ -13,7 +13,15 @@ public class LeaderBoard {
         return totalAmount;
     }
 
-    public Integer getNumberOfVehicles() {
-        return numberOfVehicles;
+    public void setTotalAmount(double amount) {
+        this.totalAmount+=amount;
+    }
+
+    public Integer getTotalVehicles() {
+        return totalVehicles;
+    }
+
+    public void setTotalVehicles(Integer numberOfVehicles){
+        this.totalVehicles+=numberOfVehicles;
     }
 }

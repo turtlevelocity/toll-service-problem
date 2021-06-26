@@ -4,17 +4,22 @@ public abstract class Pass {
 
     private Toll toll;
     private TollBooth tollBooth;
+    private Vehicle vehicle;
 
     PassStatus status;
 
-    public Pass(Toll toll, TollBooth tollBooth){
+    public Pass(Toll toll, TollBooth tollBooth, Vehicle vehicle){
         this.toll = toll;
         this.tollBooth = tollBooth;
-        this.status = PassStatus.VALID;
+        this.vehicle = vehicle;
     }
 
     public Toll getToll() {
         return toll;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
     public void setStatus(PassStatus status) {
@@ -25,6 +30,8 @@ public abstract class Pass {
         return tollBooth;
     }
 
-    public abstract boolean isValidPass(Vehicle vehicle, Toll toll);
+    public abstract boolean isValidPass(Pass pass, Toll toll);
+
+//    public abstract void updatePass();
 
 }
