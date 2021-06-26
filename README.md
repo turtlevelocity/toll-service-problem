@@ -1,2 +1,2 @@
-# Parking Lot Problem
-Designing Parking Lot problem using object oriented principles
+# Toll Service Problem
+Designing Toll Service Problem using object oriented principles
