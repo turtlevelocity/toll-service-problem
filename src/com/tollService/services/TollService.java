@@ -1,11 +1,9 @@
 package com.tollService.services;
 
+import com.tollService.db.TollServiceData;
 import com.tollService.exceptions.AlreadyExistException;
-import com.tollService.models.LeaderBoard;
-import com.tollService.models.Pass;
-import com.tollService.models.Toll;
-import com.tollService.models.TollBooth;
-import com.tollService.models.Vehicle;
+import com.tollService.exceptions.PassNotFoundException;
+import com.tollService.models.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,55 +11,68 @@ import java.util.List;
 import java.util.Map;
 
 public class TollService {
-    private Map<Toll, Map<TollBooth, List<Vehicle>>> tolls;
-    private VehicleService vehicleService;
+//    private Map<Toll, Map<TollBooth, List<Vehicle>>> tolls;
+//    private VehicleService vehicleService;
+    private TollServiceData tollServiceData;
 
     public TollService(VehicleService vehicleService){
-        this.tolls = new HashMap<>();
-        this.vehicleService = vehicleService;
+//        this.tolls = new HashMap<>();
+//        this.vehicleService = vehicleService;
+        this.tollServiceData = new TollServiceData();
     }
 
-    private void updateTolls(Toll toll, TollBooth booth, Vehicle vehicle){
-        Map<TollBooth, List<Vehicle>> boothListMap = tolls.get(toll);
-        boothListMap.get(booth).add(vehicle);
+    public boolean isValidPass(String vehicleId, Pass pass, Toll toll){
+        return (pass.isValidPass(toll) && (pass.getVehicle().getNumber().equals(vehicleId)));
     }
 
-    public void addTollBooth(Toll toll, TollBooth booth){
+    public Pass createPass(Vehicle vehicle, PassType passType, Toll toll, TollBooth booth){
+        if(passType.equals(PassType.SINGLE)){
+            return createSinglePass(vehicle, toll, booth);
+        }
+        if(passType.equals(PassType.RETURN)){
+            return createReturnPass(vehicle, toll, booth);
+        }
+        if(passType.equals(PassType.WEEKLY)){
+            return createWeeklyPass(vehicle, toll, booth);
+        }
+        throw new PassNotFoundException();
+    }
+
+    private Pass createSinglePass(Vehicle vehicle, Toll toll, TollBooth booth){
+        Bill bill = new Bill(1.0, vehicle, toll);
+        Pass pass = new SinglePass(toll, booth, vehicle, bill);
+        return pass;
+    }
+
+    private Pass createReturnPass(Vehicle vehicle, Toll toll, TollBooth booth){
+        Bill bill = new Bill(2.0, vehicle, toll);
+        Pass pass = new ReturnPass(toll, booth, vehicle, bill);
+        return pass;
+    }
+
+    private Pass createWeeklyPass(Vehicle vehicle, Toll toll, TollBooth booth){
+        Bill bill = new Bill(3.0, vehicle, toll);
+        Pass pass = new WeekPass(toll, booth, vehicle, bill);
+        return pass;
+    }
+
+//    private void updateTolls(Toll toll, TollBooth booth, Vehicle vehicle){
+//        Map<TollBooth, List<Vehicle>> boothListMap = tolls.get(toll);
+//        boothListMap.get(booth).add(vehicle);
+//    }
+
+    public void assignBoothToToll(Toll toll, TollBooth booth){
         toll.addBooth(booth);
-        if(!this.tolls.containsKey(toll)){
-            this.tolls.put(toll, new HashMap<>());
-        }
-        if(this.tolls.get(toll).containsKey(booth)){
-            throw new AlreadyExistException();
-        }
-        this.tolls.get(toll).put(booth, new ArrayList<>());
+        tollServiceData.updateTollData(toll, booth);
     }
 
-    public boolean isValidPass(Toll toll, TollBooth booth, String vehicleId){
-        Pass pass = vehicleService.getVehiclePass(vehicleId);
-        if(!pass.getToll().equals(toll)){
-            return false;
-        }
-        Vehicle vehicle = vehicleService.getVehicle(vehicleId);
 
-       return pass.isValidPass(vehicle, toll);
 
-    }
-
-    public void addPass(Pass pass, String vehicleId, Vehicle vehicle){
-        vehicleService.addVehicle(vehicleId, vehicle);
-        vehicleService.addVehiclePass(vehicleId, pass);
-        Toll toll = pass.getToll();
-        TollBooth booth = pass.getTollBooth();
-        this.updateTolls(toll, booth, vehicle);
-    }
-
-    public LeaderBoard getLeaderBoard(Toll toll, TollBooth tollBooth){
-        List<Vehicle> vehicles = tolls.get(toll).get(tollBooth);
-        double totalAmount = 0;
-        for(Vehicle vehicle: vehicles){
-            totalAmount+=vehicle.getPrice();
-        }
-        return new LeaderBoard(vehicles.size(), totalAmount);
-    }
+//    public void addPass(Pass pass, String vehicleId, Vehicle vehicle){
+//        vehicleService.addVehicle(vehicleId, vehicle);
+//        vehicleService.addVehiclePass(vehicleId, pass);
+//        Toll toll = pass.getToll();
+//        TollBooth booth = pass.getTollBooth();
+//        this.updateTolls(toll, booth, vehicle);
+//    }
 }

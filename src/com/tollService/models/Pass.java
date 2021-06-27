@@ -5,13 +5,15 @@ public abstract class Pass {
     private Toll toll;
     private TollBooth tollBooth;
     private Vehicle vehicle;
+    private Bill bill;
 
     PassStatus status;
 
-    public Pass(Toll toll, TollBooth tollBooth, Vehicle vehicle){
+    public Pass(Toll toll, TollBooth tollBooth, Vehicle vehicle, Bill bill){
         this.toll = toll;
         this.tollBooth = tollBooth;
         this.vehicle = vehicle;
+        this.bill = bill;
     }
 
     public Toll getToll() {
@@ -30,8 +32,9 @@ public abstract class Pass {
         return tollBooth;
     }
 
-    public abstract boolean isValidPass(Pass pass, Toll toll);
+    public abstract boolean isValidPass(Toll toll);
 
-//    public abstract void updatePass();
-
+    public Bill getBill(){
+        return bill;
+    }
 }

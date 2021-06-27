@@ -10,8 +10,8 @@ public class WeekPass extends Pass {
 
     private Date validUpTo;
 
-    public WeekPass(Toll toll, TollBooth booth, Vehicle vehicle) {
-        super(toll, booth, vehicle);
+    public WeekPass(Toll toll, TollBooth booth, Vehicle vehicle, Bill bill) {
+        super(toll, booth, vehicle, bill);
         this.validUpTo = new Date();
         this.status = PassStatus.VALID;
     }
@@ -22,11 +22,11 @@ public class WeekPass extends Pass {
         return newDate;
     }
     @Override
-    public boolean isValidPass(Pass pass, Toll toll){
-        return (pass.status==PassStatus.VALID && pass.getToll().equals(toll));
+    public boolean isValidPass(Toll toll){
+        return (this.status==PassStatus.VALID && this.getToll().equals(toll));
     }
 
-    public void updatePass(Pass pass){
+    public void updatePass(){
         Date currentDate = new Date();
         if(this.validUpTo.before(currentDate)){
             this.setStatus(PassStatus.EXPIRED);
