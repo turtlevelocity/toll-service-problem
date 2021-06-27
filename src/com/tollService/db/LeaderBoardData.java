@@ -11,19 +11,28 @@ import java.util.List;
 import java.util.Map;
 
 public class LeaderBoardData {
-    private Map<Toll, List<Pass>> tollLeaderBoardMap;
     private Map<TollBooth, List<Pass>>boothLeaderBoardMap;
+    private static LeaderBoardData leaderBoardData=null;
 
-    public LeaderBoardData(){
-        this.tollLeaderBoardMap = new HashMap<>();
+    private LeaderBoardData(){
         this.boothLeaderBoardMap = new HashMap<>();
     }
 
-    public void updateTollLeaderBoard(Toll toll, Pass pass){
+    public static LeaderBoardData getInstance(){
+        if(leaderBoardData==null){
+           leaderBoardData = new LeaderBoardData();
+        }
+        return leaderBoardData;
+    }
+
+    public void updateTollBoothLeaderBoard(TollBooth booth, Pass pass){
+        List<Pass> passes = boothLeaderBoardMap.get(booth);
+        passes.add(pass);
+        boothLeaderBoardMap.put(booth, passes);
 
     }
-    
-    public void updateBoothLeaderBoard(TollBooth booth, Pass pass){
 
+    public List<Pass> getBoothPasses(TollBooth booth) {
+        return boothLeaderBoardMap.get(booth);
     }
 }

@@ -8,8 +8,9 @@ public class TollController {
     private final TollService tollService;
     private final LeaderBoardService leaderBoardService;
 
-    public TollController(TollService tollService){
+    public TollController(TollService tollService, LeaderBoardService leaderBoardService){
         this.tollService = tollService;
+        this.leaderBoardService = leaderBoardService;
     }
 
     public boolean validatePass(String vehicleId, Pass pass, Toll toll){
@@ -24,16 +25,12 @@ public class TollController {
         tollService.assignBoothToToll(toll, booth);
     }
 
-//    public void addPass(Pass pass, String vehicleId, Vehicle vehicle){
-//        tollService.addPass(pass, vehicleId, vehicle);
-//    }
-
     public void updateLeaderBoard(Toll toll, TollBooth booth, Pass pass){
         leaderBoardService.updateLeaderBoard(toll, booth, pass);
     }
 
-    public LeaderBoard getTollLeaderBoard(Toll toll, TollBooth tollBooth){
-        return leaderBoardService.getLeaderBoard(toll, tollBooth);
+    public LeaderBoard getTollLeaderBoard(Toll toll){
+        return leaderBoardService.getLeaderBoard(toll);
     }
 
     public LeaderBoard getTollBoothLeaderBoard(Toll toll, TollBooth booth){

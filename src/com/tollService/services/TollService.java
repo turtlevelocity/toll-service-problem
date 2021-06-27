@@ -11,14 +11,10 @@ import java.util.List;
 import java.util.Map;
 
 public class TollService {
-//    private Map<Toll, Map<TollBooth, List<Vehicle>>> tolls;
-//    private VehicleService vehicleService;
     private TollServiceData tollServiceData;
 
     public TollService(VehicleService vehicleService){
-//        this.tolls = new HashMap<>();
-//        this.vehicleService = vehicleService;
-        this.tollServiceData = new TollServiceData();
+        this.tollServiceData = TollServiceData.getInstance();
     }
 
     public boolean isValidPass(String vehicleId, Pass pass, Toll toll){
@@ -56,23 +52,8 @@ public class TollService {
         return pass;
     }
 
-//    private void updateTolls(Toll toll, TollBooth booth, Vehicle vehicle){
-//        Map<TollBooth, List<Vehicle>> boothListMap = tolls.get(toll);
-//        boothListMap.get(booth).add(vehicle);
-//    }
-
     public void assignBoothToToll(Toll toll, TollBooth booth){
         toll.addBooth(booth);
         tollServiceData.updateTollData(toll, booth);
     }
-
-
-
-//    public void addPass(Pass pass, String vehicleId, Vehicle vehicle){
-//        vehicleService.addVehicle(vehicleId, vehicle);
-//        vehicleService.addVehiclePass(vehicleId, pass);
-//        Toll toll = pass.getToll();
-//        TollBooth booth = pass.getTollBooth();
-//        this.updateTolls(toll, booth, vehicle);
-//    }
 }

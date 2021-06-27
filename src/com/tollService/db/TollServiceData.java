@@ -11,10 +11,22 @@ import java.util.Map;
 
 public class TollServiceData {
 
+    private static TollServiceData tollServiceData = null;
     private Map<Toll, List<TollBooth>> tollMap;
 
-    public TollServiceData(){
+    private TollServiceData(){
         this.tollMap = new HashMap<>();
+    }
+
+    public static TollServiceData getInstance(){
+        if(tollServiceData==null){
+            tollServiceData = new TollServiceData();
+        }
+        return tollServiceData;
+    }
+
+    public List<TollBooth> getTollBooths(Toll toll) {
+        return tollMap.get(toll);
     }
 
     public void updateTollData(Toll toll, TollBooth booth){
@@ -28,5 +40,20 @@ public class TollServiceData {
         }
         booths.add(booth);
         this.tollMap.put(toll, booths);
+    }
+
+    public boolean validateBooth(Toll toll, TollBooth booth){
+        if(!validateToll(toll)){
+            return false;
+        }
+        List<TollBooth> booths = this.tollMap.get(toll);
+        if(!booths.contains(booth)){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateToll(Toll toll){
+        return tollMap.containsKey(toll);
     }
 }
