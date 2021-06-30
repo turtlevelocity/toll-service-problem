@@ -1,7 +1,9 @@
 package com.tollService.services;
 
+import com.tollService.db.LeaderBoardData;
 import com.tollService.db.TollServiceData;
 import com.tollService.exceptions.AlreadyExistException;
+import com.tollService.exceptions.InvalidException;
 import com.tollService.exceptions.PassNotFoundException;
 import com.tollService.models.*;
 
@@ -11,14 +13,19 @@ import java.util.List;
 import java.util.Map;
 
 public class TollService {
-    private TollServiceData tollServiceData;
+    private final TollServiceData tollServiceData;
+    private final LeaderBoardData leaderBoardData;
 
-    public TollService(VehicleService vehicleService){
+    public TollService(){
         this.tollServiceData = TollServiceData.getInstance();
+        this.leaderBoardData = LeaderBoardData.getInstance();
     }
 
-    public boolean isValidPass(String vehicleId, Pass pass, Toll toll){
-        return (pass.isValidPass(toll) && (pass.getVehicle().getNumber().equals(vehicleId)));
+    public void scanPass(Pass pass, String vehicleId, Toll toll){
+        if(!isValidPass(vehicleId, pass, toll)){
+            System.out.println("Not a Valid Pass");
+        }
+        pass.updatePass();
     }
 
     public Pass createPass(Vehicle vehicle, PassType passType, Toll toll, TollBooth booth){
@@ -53,7 +60,13 @@ public class TollService {
     }
 
     public void assignBoothToToll(Toll toll, TollBooth booth){
+        booth.activateBooth();
         toll.addBooth(booth);
         tollServiceData.updateTollData(toll, booth);
+        leaderBoardData.addBooth(booth);
+    }
+
+    private boolean isValidPass(String vehicleId, Pass pass, Toll toll){
+        return (pass.isValidPass(toll) && (pass.getVehicle().getNumber().equals(vehicleId)));
     }
 }

@@ -14,6 +14,7 @@ public class WeekPass extends Pass {
         super(toll, booth, vehicle, bill);
         this.validUpTo = new Date();
         this.status = PassStatus.VALID;
+        this.type = PassType.WEEKLY;
     }
 
     private Date setValidUpTo() {
@@ -26,10 +27,12 @@ public class WeekPass extends Pass {
         return (this.status==PassStatus.VALID && this.getToll().equals(toll));
     }
 
+    @Override
     public void updatePass(){
         Date currentDate = new Date();
         if(this.validUpTo.before(currentDate)){
             this.setStatus(PassStatus.EXPIRED);
         }
     }
+
 }

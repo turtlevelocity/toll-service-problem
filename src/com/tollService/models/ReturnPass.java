@@ -8,6 +8,7 @@ public class ReturnPass extends Pass {
         super(toll, booth, vehicle, bill);
         this.status = PassStatus.VALID;
         this.numberOfTrips = 1;
+        this.type = PassType.RETURN;
     }
 
     @Override
@@ -15,8 +16,10 @@ public class ReturnPass extends Pass {
         return (this.getToll().equals(toll) && this.status==PassStatus.VALID);
     }
 
-    public void updatePass(Pass pass){
+    @Override
+    public void updatePass(){
         this.numberOfTrips++;
         this.setStatus(PassStatus.EXPIRED);
     }
+
 }

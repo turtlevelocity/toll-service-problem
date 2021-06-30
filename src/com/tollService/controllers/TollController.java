@@ -13,20 +13,20 @@ public class TollController {
         this.leaderBoardService = leaderBoardService;
     }
 
-    public boolean validatePass(String vehicleId, Pass pass, Toll toll){
-        return tollService.isValidPass(vehicleId, pass, toll);
-    }
-
     public Pass createPass(Vehicle vehicle, PassType passType, Toll toll, TollBooth booth){
         return tollService.createPass(vehicle, passType, toll, booth);
+    }
+
+    public void scanPass(Pass pass, String vehicleId, Toll toll){
+        tollService.scanPass(pass, vehicleId, toll);
     }
 
     public void assignBoothToToll(Toll toll, TollBooth booth){
         tollService.assignBoothToToll(toll, booth);
     }
 
-    public void updateLeaderBoard(Toll toll, TollBooth booth, Pass pass){
-        leaderBoardService.updateLeaderBoard(toll, booth, pass);
+    public void updateLeaderBoard(TollBooth booth, Pass pass){
+        leaderBoardService.updateTollBoothLeaderBoard(booth, pass);
     }
 
     public LeaderBoard getTollLeaderBoard(Toll toll){

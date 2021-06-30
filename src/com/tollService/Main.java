@@ -1,14 +1,8 @@
 package com.tollService;
 
 import com.tollService.controllers.TollController;
-import com.tollService.models.LeaderBoard;
-import com.tollService.models.Pass;
-import com.tollService.models.ReturnPass;
-import com.tollService.models.SinglePass;
-import com.tollService.models.Toll;
-import com.tollService.models.TollBooth;
-import com.tollService.models.TwoWheelVehicle;
-import com.tollService.models.Vehicle;
+import com.tollService.models.*;
+import com.tollService.services.LeaderBoardService;
 import com.tollService.services.TollService;
 import com.tollService.services.VehicleService;
 
@@ -16,40 +10,90 @@ public class Main {
 
     public static void main(String[] args) {
 	// write your code here
-        VehicleService vehicleService = new VehicleService();
-        TollService tollService = new TollService(vehicleService);
-        Toll toll = new Toll("1");
-        TollBooth tollBooth = new TollBooth("11");
-        TollBooth tollBooth12 = new TollBooth("12");
-        tollService.addTollBooth(toll, tollBooth);
-        tollService.addTollBooth(toll, tollBooth12);
 
-        TollController tollController = new TollController(tollService);
+        // Initialize Service
+        TollService tollService = new TollService();
+        LeaderBoardService leaderBoardService = new LeaderBoardService();
 
-        Pass pass = new SinglePass(toll, tollBooth);
-        Pass pass1 = new ReturnPass(toll, tollBooth);
-        Vehicle vehicle = new TwoWheelVehicle("v1", 1.0, pass);
-        Vehicle vehicle1 = new TwoWheelVehicle("v2", 2.0, pass1);
+        // Initialize Controller
+        TollController tollController = new TollController(tollService, leaderBoardService);
 
-        tollController.addPass(pass, "v1", vehicle);
-        tollController.addPass(pass1, "v2", vehicle1);
+        // Initialize Toll
+        Toll toll1 = new Toll("1");
+        Toll toll2 = new Toll("2");
 
-        System.out.println(tollController.validatePass("v2", tollBooth,toll));
-        System.out.println(tollController.validatePass("v2",tollBooth, toll));
-        System.out.println(tollController.validatePass("v2",tollBooth, toll));
-        LeaderBoard leaderBoard = tollController.getTollLeaderBoard(toll, tollBooth);
-        System.out.println(leaderBoard.getNumberOfVehicles());
-        System.out.println(leaderBoard.getTotalAmount());
+        // Initialize Tollbooth
+        TollBooth booth1 = new TollBooth("1");
+        TollBooth booth2 = new TollBooth("2");
+        TollBooth booth3 = new TollBooth("3");
+        TollBooth booth4 = new TollBooth("4");
 
-        Pass pass3 = new SinglePass(toll, tollBooth12);
-        Vehicle vehicle3 = new TwoWheelVehicle("v3", 1.0, pass);
+        // Add toll booth to toll
+        tollController.assignBoothToToll(toll1, booth1);
+        tollController.assignBoothToToll(toll1, booth2);
+        tollController.assignBoothToToll(toll2, booth3);
+        tollController.assignBoothToToll(toll2, booth4);
 
-        tollController.addPass(pass3, "v3", vehicle3);
+        // Initialize vehicle
+        Vehicle twVehicle1 = new TwoWheelVehicle("tv1");
+        Vehicle twVehicle2 = new TwoWheelVehicle("tv2");
+        Vehicle fwVehicle1 = new FourWheelVehicle("fv1");
+        Vehicle fwVehicle2 = new FourWheelVehicle("fv2");
 
-        System.out.println(tollController.validatePass("v3", tollBooth,toll));
-        System.out.println(tollController.validatePass("v3",tollBooth, toll));
-        LeaderBoard leaderBoard2 = tollController.getTollLeaderBoard(toll, tollBooth12);
-        System.out.println(leaderBoard2.getNumberOfVehicles());
-        System.out.println(leaderBoard2.getTotalAmount());
+        // Create Pass
+        Pass pass1 = tollController.createPass(twVehicle1, PassType.SINGLE, toll1, booth1);
+        Pass pass2 = tollController.createPass(twVehicle2, PassType.RETURN, toll1, booth2);
+        Pass pass3 = tollController.createPass(fwVehicle1, PassType.SINGLE, toll2, booth3);
+        Pass pass4 = tollController.createPass(fwVehicle2, PassType.WEEKLY, toll2, booth4);
+
+        // Print out leader board
+        System.out.println("Toll1 leaderboards: "+ tollController.getTollLeaderBoard(toll1).getTotalAmount());
+        System.out.println("Booth1 leaderBoard: "+tollController.getTollBoothLeaderBoard(toll1, booth1).getTotalAmount());
+        System.out.println("Booth2 leaderboard: "+tollController.getTollBoothLeaderBoard(toll1, booth2).getTotalAmount());
+
+        // Scan Pass
+        tollController.scanPass(pass1, "tv1", toll1);
+        tollController.updateLeaderBoard(booth1, pass1);
+
+        // Print out leader board
+        System.out.println("Toll1 leaderboards: "+ tollController.getTollLeaderBoard(toll1).getTotalAmount());
+        System.out.println("Booth1 leaderBoard: "+tollController.getTollBoothLeaderBoard(toll1, booth1).getTotalAmount());
+        System.out.println("Booth2 leaderboard: "+tollController.getTollBoothLeaderBoard(toll1, booth2).getTotalAmount());
+
+        // Scan Pass
+        tollController.scanPass(pass2, "tv2", toll1);
+        tollController.updateLeaderBoard(booth2, pass2);
+
+        // Print out leader board
+        System.out.println("Toll1 leaderboards: "+ tollController.getTollLeaderBoard(toll1).getTotalAmount());
+        System.out.println("Booth1 leaderBoard: "+tollController.getTollBoothLeaderBoard(toll1, booth1).getTotalAmount());
+        System.out.println("Booth2 leaderboard: "+tollController.getTollBoothLeaderBoard(toll1, booth2).getTotalAmount());
+
+        // Scan Pass
+        tollController.scanPass(pass3, "fv1", toll2);
+        tollController.updateLeaderBoard(booth3, pass3);
+
+        // Print out leader board
+        System.out.println("Toll2 leaderboards: "+ tollController.getTollLeaderBoard(toll2).getTotalAmount());
+        System.out.println("Booth3 leaderBoard: "+tollController.getTollBoothLeaderBoard(toll2, booth3).getTotalAmount());
+        System.out.println("Booth4 leaderboard: "+tollController.getTollBoothLeaderBoard(toll2, booth4).getTotalAmount());
+
+        // Scan Pass
+        tollController.scanPass(pass4, "fv2", toll2);
+        tollController.updateLeaderBoard(booth3, pass4);
+
+        // Print out leader board
+        System.out.println("Toll2 leaderboards: "+ tollController.getTollLeaderBoard(toll2).getTotalAmount());
+        System.out.println("Booth3 leaderBoard: "+tollController.getTollBoothLeaderBoard(toll2, booth3).getTotalAmount());
+        System.out.println("Booth4 leaderboard: "+tollController.getTollBoothLeaderBoard(toll2, booth4).getTotalAmount());
+
+        // Again try to scan single pass which is already expired
+        tollController.scanPass(pass1, "tv1", toll1);
+
+        // Scan different pass with different vehicle
+        tollController.scanPass(pass2, "fv1", toll1);
+
+        // Scan pass in different toll
+        tollController.scanPass(pass4, "fv2", toll1);
     }
 }

@@ -32,6 +32,11 @@ public class LeaderBoardData {
 
     }
 
+    public void addBooth(TollBooth booth){
+        List<Pass> passes = new ArrayList<>();
+        this.boothLeaderBoardMap.put(booth, passes);
+    }
+
     public List<Pass> getBoothPasses(TollBooth booth) {
         return boothLeaderBoardMap.get(booth);
     }

@@ -8,8 +8,9 @@ public class SinglePass extends Pass{
 
     public SinglePass(Toll toll, TollBooth booth, Vehicle vehicle, Bill bill) {
         super(toll, booth, vehicle, bill);
-        this.status = PassStatus.EXPIRED;
+        this.status = PassStatus.VALID;
         this.id = UUID.randomUUID().toString();
+        this.type = PassType.SINGLE;
     }
 
     @Override
@@ -17,7 +18,8 @@ public class SinglePass extends Pass{
         return (this.status==PassStatus.VALID && this.getToll().equals(toll));
     }
 
-    public void updatePass(Pass pass){
+    @Override
+    public void updatePass(){
         this.setStatus(PassStatus.EXPIRED);
     }
 }
